@@ -100,7 +100,12 @@ class integration(object):
         return zones
 
     def process_logs(self, zone, logs):
-        #self.ds.writeCEFEvent()
+        for log in logs:
+           log['zone'] = zone
+           self.ds.writeJSONEvent(log)
+        return
+
+        '''
         extension = {}
         for log in logs:
             for item in log.keys():
@@ -125,10 +130,12 @@ class integration(object):
             extension['msg'] = msg
             self.ds.writeCEFEvent(type='request', action=extension['cs1'], dataDict=extension)
         return
+        '''
 
     def run(self):
         global time
-        last_run = self.ds.get_state()
+        self.state_dir = self.ds.config_get('cloudflare', 'state_dir')
+        last_run = self.ds.get_state(self.state_dir)
         start_time = None
         current_run = 60 * ((time.time() - 120) // 60)
         if last_run == None:
@@ -147,7 +154,7 @@ class integration(object):
         self.cf = CloudFlare.CloudFlare(email=self.ds.config_get('cloudflare', 'account-email'), token=self.ds.config_get('cloudflare', 'api-key'))
 
         zones = self.get_active_zones()
-        self.ds.store_state(current_run)
+        self.ds.set_state(self.state_dir, current_run)
         for zone in zones:
             self.ds.log('INFO', 'Retrieving logs for zone: ' + zone['name'])
             logs = self.get_zone_logs(zone, start_time_str, end_time_str)
@@ -192,7 +199,7 @@ class integration(object):
                 self.send_syslog = False
     
         try:
-            self.ds = DefenseStorm('cloudflareEventLogs', testing=self.testing, send_syslog = self.send_syslog, store_state = True)
+            self.ds = DefenseStorm('cloudflareEventLogs', testing=self.testing, send_syslog = self.send_syslog)
         except Exception ,e:
             traceback.print_exc()
             try:
