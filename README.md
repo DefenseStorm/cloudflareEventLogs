@@ -22,6 +22,6 @@ git clone --recurse-submodules https://github.com/DefenseStorm/cloudflareEventLo
   change the following items in the config file based on your configuration
 
 3. Add the following entry to the root crontab so the script will run every
-   15 minutes.
+   5 minutes.
 
-   */15 * * * * /usr/local/cloudflareEventLogs/cloudflareEventLogs.py
+   */5 * * * * /usr/local/cloudflareEventLogs/cloudflareEventLogs.py
