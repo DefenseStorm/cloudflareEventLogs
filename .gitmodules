@@ -1,3 +1,6 @@
 [submodule "ds-integration"]
 	path = ds-integration
 	url = https://github.com/DefenseStorm/ds-integration.git
+[submodule "python-cloudflare"]
+	path = python-cloudflare
+	url = https://github.com/cloudflare/python-cloudflare.git
