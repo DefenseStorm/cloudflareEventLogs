@@ -21,6 +21,20 @@ class integration(object):
     # I think I want to map Event Type to differnt types of logs: Logpull, Audit, etc
     # Name will be the Zone Name
 
+    JSON_field_mappings = {
+        'OriginIP' : 'dest_ip',
+        'ClientIP' : 'client_ip',
+        'ClientSSLProtocol' : 'protocol',
+        'ClientRequestBytes' : 'bytes',
+        'ClientRequestHost' : 'http_host',
+        'ClientRequestMethod' : 'http_method',
+        'ClientRequestPath' : 'http_path',
+        'ClientRequestURI' : 'http_uri',
+        'ClientRequestUserAgent' : 'http_user_agent',
+        'EdgeResponseBytes' : 'bytes_sent',
+        'SecurityLevel' : 'message',
+    }
+
     CEF_field_mappings = {
         'RayID' : None,
         #'SecurityLevel' : 'flexString1',
@@ -101,8 +115,9 @@ class integration(object):
 
     def process_logs(self, zone, logs):
         for log in logs:
-           log['zone'] = zone
-           self.ds.writeJSONEvent(log)
+           log['category'] = zone['name']
+           log['timestamp'] = str(int(log['EdgeEndTimestamp']) / 1000)
+           self.ds.writeJSONEvent(log, JSON_field_mappings = self.JSON_field_mappings)
         return
 
         '''
