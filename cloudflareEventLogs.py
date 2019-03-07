@@ -22,8 +22,9 @@ class integration(object):
     # Name will be the Zone Name
 
     JSON_field_mappings = {
-        'OriginIP' : 'dest_ip',
-        'ClientIP' : 'client_ip',
+        'OriginIP' : 'ip_dest',
+        #'ClientIP' : 'client_ip',
+        'ClientIP' : 'ip_src',
         'ClientSSLProtocol' : 'protocol',
         'ClientRequestBytes' : 'bytes',
         'ClientRequestHost' : 'http_host',
