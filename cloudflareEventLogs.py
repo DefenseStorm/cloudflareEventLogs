@@ -34,9 +34,9 @@ class integration(object):
         'ClientRequestUserAgent' : 'http_user_agent',
         'EdgeResponseBytes' : 'bytes_sent',
         'SecurityLevel' : 'message',
-        'FirewallMatchesActions' : action,
-        'FirewallMatchesSources' : action_source,
-        'FirewallMatchesRuleIDs' : activity_id
+        'FirewallMatchesActions' : 'action',
+        'FirewallMatchesSources' : 'action_source',
+        'FirewallMatchesRuleIDs' : 'activity_id'
     }
 
     CEF_field_mappings = {
