@@ -34,6 +34,9 @@ class integration(object):
         'ClientRequestUserAgent' : 'http_user_agent',
         'EdgeResponseBytes' : 'bytes_sent',
         'SecurityLevel' : 'message',
+        'FirewallMatchesActions' : action,
+        'FirewallMatchesSources' : action_source,
+        'FirewallMatchesRuleIDs' : activity_id
     }
 
     CEF_field_mappings = {
@@ -72,7 +75,10 @@ class integration(object):
         'WAFProfile' : 'cs3',
         'WAFRuleID' : 'cs2',
         #'WAFRuleID' : None,
-        'WAFRuleMessage' : 'cs4'
+        'WAFRuleMessage' : 'cs4',
+        'FirewallMatchesActions' : None,
+        'FirewallMatchesSources' : None,
+        'FirewallMatchesRuleIDs' : None
     }
     CEF_custom_field_list = ['cs1','cs2','cs3','cs4','cs5','cs6','cn1','cn2','cn3','flexDate1','flexString1','flexString2']
 
