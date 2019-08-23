@@ -23,7 +23,6 @@ class integration(object):
 
     JSON_field_mappings = {
         'OriginIP' : 'ip_dest',
-        #'ClientIP' : 'client_ip',
         'ClientIP' : 'ip_src',
         'ClientSSLProtocol' : 'protocol',
         'ClientRequestBytes' : 'bytes',
@@ -36,72 +35,37 @@ class integration(object):
         'SecurityLevel' : 'message',
         'FirewallMatchesActions' : 'action',
         'FirewallMatchesSources' : 'action_source',
-        'FirewallMatchesRuleIDs' : 'activity_id'
-    }
-
-    CEF_field_mappings = {
+        'FirewallMatchesRuleIDs' : 'activity_id',
+        'RequestHeaders': 'request',
+        'ResponseHeaders': 'response',
+	'Cookies': None,
         'RayID' : None,
-        #'SecurityLevel' : 'flexString1',
         'SecurityLevel' : None,
         'ZoneID' : None,
-        'OriginIP' : 'dst',
         'CacheResponse' : None,
         'ClientASN' : None,
         'ClientCountry' : None,
         'ClientDeviceType' : None,
-        'ClientIP' : 'src',
-        'ClientSSLProtocol' : 'proto',
-        'ClientRequestBytes' : None,
-        'ClientRequestHost' : 'dhost',
-        'ClientRequestMethod' : None,
-        'ClientRequestPath' : None,
         'ClientRequestReferer' : None,
-        'ClientRequestURI' : 'cs5',
-        'ClientRequestUserAgent' : 'cs6',
         'ClientRequestProtocol' : None,
-        #'EdgeEndTimestamp' : 'end',
         'EdgeEndTimestamp' : None,
         'EdgePathingSrc' : None,
         'EdgePathingStatus' : None,
-        'EdgeResponseBytes' : None,
         'EdgeResponseStatus' : None,
-        #'EdgeStartTimestamp' : 'start',
-        'EdgeStartTimestamp' : 'rt',
-        'OriginResponseStatus' : 'cn3',
-        'WAFAction' : 'cs1',
-        'WAFFlags' : 'cn1',
-        #'WAFMatchedVar' : 'cs2',
+        'EdgeStartTimestamp' : None,
+        'OriginResponseStatus' : None,
+        'WAFAction' : None,
+        'WAFFlags' : None,
         'WAFMatchedVar' : None,
-        'WAFProfile' : 'cs3',
-        'WAFRuleID' : 'cs2',
-        #'WAFRuleID' : None,
-        'WAFRuleMessage' : 'cs4',
-        'FirewallMatchesActions' : None,
-        'FirewallMatchesSources' : None,
-        'FirewallMatchesRuleIDs' : None
+        'WAFProfile' : None,
+        'WAFRuleID' : None,
+        'WAFRuleMessage' : None
     }
-    CEF_custom_field_list = ['cs1','cs2','cs3','cs4','cs5','cs6','cn1','cn2','cn3','flexDate1','flexString1','flexString2']
-
-    CEF_custom_field_labels = {
-        'cs1Label' : 'WAFAction',
-        'cs2Label' : 'WAFRuleID',
-        'cs3Label' : 'WAFProfile',
-        'cs4Label' : 'WAFRuleMessage',
-        'cs5Label' : 'ClientRequestURI',
-        'cs6Label' : 'ClientRequestUserAgent',
-        'cn1Label' : 'WAFFlags',
-        'cn2Label' : 'WAFRuleID',
-        'cn3Label' : 'OriginResponseStatus',
-        'flexDate1Label' : None,
-        'flexString1Label' : 'SecurityLevel',
-        'flexString2Label' : None,
-    }
-
 
     def get_zone_logs(self, zone, start_time, end_time):
         keylist = ""
         first = True
-        for key in self.CEF_field_mappings.keys():
+        for key in self.JSON_field_mappings.keys():
             if first:
                 keylist += '%s' %key
                 first = False
@@ -126,33 +90,6 @@ class integration(object):
            log['timestamp'] = str(long(log['EdgeEndTimestamp']) / 1000000000)
            self.ds.writeJSONEvent(log, JSON_field_mappings = self.JSON_field_mappings)
         return
-
-        '''
-        extension = {}
-        for log in logs:
-            for item in log.keys():
-                if item in self.CEF_field_mappings.keys():
-                    if self.CEF_field_mappings[item] != None:
-                        if self.CEF_field_mappings[item] == 'rt':
-                            extension[self.CEF_field_mappings[item]] = str(int(log[item]) / 1000)
-                        else:
-                            extension[self.CEF_field_mappings[item]] = str(log[item])
-                        if self.CEF_field_mappings[item] in self.CEF_custom_field_list:
-                            extension[self.CEF_field_mappings[item] + 'Label'] = self.CEF_custom_field_labels[self.CEF_field_mappings[item] + 'Label']
-                        del log[item]
-            First = True
-            msg = ""
-            for item in log.keys():
-                if First:
-                    msg += "%s\=%s" %(item, log[item])
-                    First = False
-                else:
-                    msg += " %s\=%s" %(item, log[item])
-
-            extension['msg'] = msg
-            self.ds.writeCEFEvent(type='request', action=extension['cs1'], dataDict=extension)
-        return
-        '''
 
     def run(self):
         global time
