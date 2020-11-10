@@ -87,7 +87,7 @@ class integration(object):
     def process_logs(self, zone, logs):
         for log in logs:
            log['category'] = zone['name']
-           log['timestamp'] = str(long(log['EdgeEndTimestamp']) / 1000000000)
+           log['timestamp'] = str(int(log['EdgeEndTimestamp']) / 1000000000)
            self.ds.writeJSONEvent(log, JSON_field_mappings = self.JSON_field_mappings)
         return
 
