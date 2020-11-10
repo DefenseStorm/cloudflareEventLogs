@@ -113,7 +113,6 @@ class integration(object):
         self.cf = CloudFlare.CloudFlare(email=self.ds.config_get('cloudflare', 'account-email'), token=self.ds.config_get('cloudflare', 'api-key'))
 
         zones = self.get_active_zones()
-        self.ds.set_state(self.state_dir, current_run)
         for zone in zones:
             self.ds.log('INFO', 'Retrieving logs for zone: ' + zone['name'])
             try:
@@ -130,6 +129,7 @@ class integration(object):
                     traceback.print_exc()
             else:
                 self.ds.log('INFO', 'No logs received for zone: ' + zone['name'])
+        self.ds.set_state(self.state_dir, current_run)
 
     
     def usage(self):
