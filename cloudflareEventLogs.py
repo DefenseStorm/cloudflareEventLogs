@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys,os,getopt
 import traceback
@@ -118,14 +118,14 @@ class integration(object):
             self.ds.log('INFO', 'Retrieving logs for zone: ' + zone['name'])
             try:
                 logs = self.get_zone_logs(zone, start_time_str, end_time_str)
-            except Exception ,e:
+            except Exception as e:
                 self.ds.log('ERROR', 'Failed getting zone logs for ' + zone['name'])
                 traceback.print_exc()
             if isinstance(logs, list):
                 self.ds.log('INFO', 'Processing ' + str(len(logs)) + ' for zone: ' + zone['name'])
                 try:
                     self.process_logs(zone, logs)
-                except Exception ,e:
+                except Exception as e:
                     self.ds.log('ERROR', 'Failed processing logs for zone: ' + zone['name'])
                     traceback.print_exc()
             else:
@@ -133,17 +133,17 @@ class integration(object):
 
     
     def usage(self):
-        print
-        print os.path.basename(__file__)
-        print
-        print '  No Options: Run a normal cycle'
-        print
-        print '  -t    Testing mode.  Do all the work but do not send events to GRID via '
-        print '        syslog Local7.  Instead write the events to file \'output.TIMESTAMP\''
-        print '        in the current directory'
-        print
-        print '  -l    Log to stdout instead of syslog Local6'
-        print
+        print('')
+        print(os.path.basename(__file__))
+        print('')
+        print('  No Options: Run a normal cycle')
+        print('')
+        print('  -t    Testing mode.  Do all the work but do not send events to GRID via ')
+        print('        syslog Local7.  Instead write the events to file \'output.TIMESTAMP\'')
+        print('        in the current directory')
+        print('')
+        print('  -l    Log to stdout instead of syslog Local6')
+        print('')
     
     def __init__(self, argv):
 
@@ -167,7 +167,7 @@ class integration(object):
     
         try:
             self.ds = DefenseStorm('cloudflareEventLogs', testing=self.testing, send_syslog = self.send_syslog)
-        except Exception ,e:
+        except Exception as e:
             traceback.print_exc()
             try:
                 self.ds.log('ERROR', 'ERROR: ' + str(e))
@@ -179,5 +179,5 @@ if __name__ == "__main__":
     i = integration(sys.argv[1:]) 
     try:
         i.run()
-    except Exception ,e:
+    except Exception as e:
         traceback.print_exc()
