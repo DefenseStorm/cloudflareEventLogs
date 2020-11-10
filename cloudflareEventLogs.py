@@ -177,4 +177,7 @@ class integration(object):
 
 if __name__ == "__main__":
     i = integration(sys.argv[1:]) 
-    i.run()
+    try:
+        i.run()
+    except Exception ,e:
+        traceback.print_exc()
