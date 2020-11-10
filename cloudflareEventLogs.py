@@ -119,7 +119,10 @@ class integration(object):
             logs = self.get_zone_logs(zone, start_time_str, end_time_str)
             if isinstance(logs, list):
                 self.ds.log('INFO', 'Processing ' + str(len(logs)) + ' for zone: ' + zone['name'])
-                self.process_logs(zone, logs)
+                try:
+                    self.process_logs(zone, logs)
+                except Exception ,e:
+                    traceback.print_exc()
             else:
                 self.ds.log('INFO', 'No logs received for zone: ' + zone['name'])
 
