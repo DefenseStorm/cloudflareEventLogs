@@ -116,12 +116,17 @@ class integration(object):
         self.ds.set_state(self.state_dir, current_run)
         for zone in zones:
             self.ds.log('INFO', 'Retrieving logs for zone: ' + zone['name'])
-            logs = self.get_zone_logs(zone, start_time_str, end_time_str)
+            try:
+                logs = self.get_zone_logs(zone, start_time_str, end_time_str)
+            except Exception ,e:
+                self.ds.log('ERROR', 'Failed getting zone logs for ' + zone['name'])
+                traceback.print_exc()
             if isinstance(logs, list):
                 self.ds.log('INFO', 'Processing ' + str(len(logs)) + ' for zone: ' + zone['name'])
                 try:
                     self.process_logs(zone, logs)
                 except Exception ,e:
+                    self.ds.log('ERROR', 'Failed processing logs for zone: ' + zone['name'])
                     traceback.print_exc()
             else:
                 self.ds.log('INFO', 'No logs received for zone: ' + zone['name'])
