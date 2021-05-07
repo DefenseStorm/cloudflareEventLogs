@@ -37,7 +37,6 @@ class integration(object):
         'FirewallMatchesSources' : 'action_source',
         'FirewallMatchesRuleIDs' : 'activity_id',
         'RequestHeaders': 'request',
-        'RequestHeaders_x-forwarded-for': 'forwarded_for',
         'ResponseHeaders': 'response',
 	'Cookies': None,
         'RayID' : None,
@@ -92,7 +91,7 @@ class integration(object):
            if 'RequestHeaders' in log.keys():
                if 'x-forwarded-for' in log['RequestHeaders'].keys():
                    tmp_list = log['RequestHeaders']['x-forwarded-for'].split(',')
-                   log['RequestHeaders']['x-forwarded-for'] = tmp_list
+                   log['forwarded_for'] = tmp_list
 
            
            self.ds.writeJSONEvent(log, JSON_field_mappings = self.JSON_field_mappings)
