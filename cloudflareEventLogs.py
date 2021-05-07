@@ -89,6 +89,12 @@ class integration(object):
         for log in logs:
            log['category'] = zone['name']
            log['timestamp'] = str(int(log['EdgeEndTimestamp']) / 1000000000)
+           if 'RequestHeaders' in log.keys():
+               if 'x-forwarded-for' in log['RequestHeaders'].keys():
+                   tmp_list = log['RequestHeaders']['x-forwarded-for'].split(',')
+                   ['RequestHeaders']['x-forwarded-for'] = tmp_list
+
+           
            self.ds.writeJSONEvent(log, JSON_field_mappings = self.JSON_field_mappings)
         return
 
