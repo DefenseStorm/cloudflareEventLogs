@@ -37,6 +37,7 @@ class integration(object):
         'FirewallMatchesSources' : 'action_source',
         'FirewallMatchesRuleIDs' : 'activity_id',
         'RequestHeaders': 'request',
+        'RequestHeaders_x-forwarded-for': 'forwarded_for',
         'ResponseHeaders': 'response',
 	'Cookies': None,
         'RayID' : None,
