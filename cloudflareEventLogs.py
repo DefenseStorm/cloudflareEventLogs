@@ -91,8 +91,10 @@ class integration(object):
            if 'RequestHeaders' in log.keys():
                if 'x-forwarded-for' in log['RequestHeaders'].keys():
                    tmp_list = log['RequestHeaders']['x-forwarded-for'].split(',')
-                   log['forwarded_for'] = tmp_list
-
+                   if len(tmp_list) > 1:
+                       log['forwarded_for'] = tmp_list[0]
+                       tmp_list.pop(0)
+                       log['RequestHeaders']['x-forwarded-for'] = tmp_list
            
            self.ds.writeJSONEvent(log, JSON_field_mappings = self.JSON_field_mappings)
         return
