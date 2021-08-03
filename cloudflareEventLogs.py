@@ -78,11 +78,20 @@ class integration(object):
         return logs
 
     def get_active_zones(self):
-        zones = self.cf.zones.get()
-        for zone in zones:
+        page_number = 0
+        zones_list = []
+        while True:
+            page_number += 1
+            zones = self.cf.zones.get(params = {'per_page':100, 'page':page_number})
+            if len(zones) == 0:
+                break
+            else:
+                zones_list += zones
+
+        for zone in zones_list:
             if zone['status'] != 'active':
-                zones.remove(zone)
-        return zones
+                zones_list.remove(zone)
+        return zones_list
 
     def process_logs(self, zone, logs):
         for log in logs:
@@ -121,6 +130,7 @@ class integration(object):
         self.cf = CloudFlare.CloudFlare(email=self.ds.config_get('cloudflare', 'account-email'), token=self.ds.config_get('cloudflare', 'api-key'))
 
         zones = self.get_active_zones()
+        self.ds.log('INFO', 'Found Zone Count: ' + str(len(zones)))
         for zone in zones:
             self.ds.log('INFO', 'Retrieving logs for zone: ' + zone['name'])
             try:
