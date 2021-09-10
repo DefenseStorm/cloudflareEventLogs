@@ -105,6 +105,15 @@ class integration(object):
                        tmp_list.pop(0)
                        log['RequestHeaders']['x-forwarded-for'] = tmp_list
            
+           if 'FirewallMatchesActions' in log.keys() and isinstance(log['FirewallMatchesActions'], list) and len(log['FirewallMatchesActions']) > 0:
+               log['FirewallMatchesActions_list'] = log['FirewallMatchesActions']
+               log['FirewallMatchesActions'] = log['FirewallMatchesActions'][0]
+           if 'FirewallMatchesSources' in log.keys() and isinstance(log['FirewallMatchesSources'], list) and len(log['FirewallMatchesSources']) > 0:
+               log['FirewallMatchesSources_list'] = log['FirewallMatchesSources']
+               log['FirewallMatchesSources'] = log['FirewallMatchesSources'][0]
+           if 'FirewallMatchesRuleIDs' in log.keys() and isinstance(log['FirewallMatchesRuleIDs'], list) and len(log['FirewallMatchesRuleIDs']) > 0:
+               log['FirewallMatchesRuleIDs_list'] = log['FirewallMatchesRuleIDs']
+               log['FirewallMatchesRuleIDs'] = log['FirewallMatchesRuleIDs'][0]
            self.ds.writeJSONEvent(log, JSON_field_mappings = self.JSON_field_mappings)
         return
 
