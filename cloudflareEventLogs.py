@@ -63,7 +63,8 @@ class integration(object):
         'BotScore' : 'score',
         'BotScoreSrc' : None,
         'EdgeRateLimitAction' : None,
-        'EdgeRateLimitID' : None
+        'EdgeRateLimitID' : None,
+        'JA3Hash': None
     }
 
     def get_zone_logs(self, zone, start_time, end_time):
@@ -159,6 +160,7 @@ class integration(object):
                     self.ds.log('ERROR', 'Failed processing logs for zone: ' + zone['name'])
                     traceback.print_exc()
             else:
+                self.ds.log('INFO', 'Response: ' + str(logs)[:100])
                 self.ds.log('INFO', 'No logs received for zone: ' + zone['name'])
         self.ds.set_state(self.state_dir, current_run)
 
