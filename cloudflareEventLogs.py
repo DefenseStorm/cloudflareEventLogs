@@ -169,6 +169,9 @@ class integration(object):
                     except Exception as e:
                         self.ds.log('ERROR', 'Failed processing logs for zone: ' + zone['name'])
                         traceback.print_exc()
+                else:
+                    self.ds.log('INFO', 'Response: ' + str(logs)[:500])
+                    self.ds.log('INFO', 'No logs received for zone: ' + zone['name'])
             else:
                 self.ds.log('INFO', 'Response: ' + str(logs)[:500])
                 self.ds.log('INFO', 'No logs received for zone: ' + zone['name'])
