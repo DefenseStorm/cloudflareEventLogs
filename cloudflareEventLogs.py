@@ -60,11 +60,11 @@ class integration(object):
         'WAFProfile' : None,
         'WAFRuleID' : None,
         'WAFRuleMessage' : None,
-        'BotScore' : 'score',
-        'BotScoreSrc' : None,
+        #'BotScore' : 'score',
+        #'BotScoreSrc' : None,
         'EdgeRateLimitAction' : None,
         'EdgeRateLimitID' : None,
-        'JA3Hash': None
+        #'JA3Hash': None
     }
 
     def get_zone_logs(self, zone, start_time, end_time):
